@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="tictactoe.css" />
+		<title>Tic tac toe</title>
+	</head>
+	<body>
+		<h1>Tic tac toe in javascript</h1>
+		<h2 id="player">Player: X</h2>
+		<div id="gameboard">
+			<div id="0" class="square blackBg" onclick="selected(this)"></div>
+			<div id="1" class="square whiteBg" onclick="selected(this)"></div>
+			<div id="2" class="square blackBg" onclick="selected(this)"></div>
+
+			<div id="3" class="square whiteBg" onclick="selected(this)"></div>
+			<div id="4" class="square blackBg" onclick="selected(this)"></div>
+			<div id="5" class="square whiteBg" onclick="selected(this)"></div>
+
+			<div id="6" class="square blackBg" onclick="selected(this)"></div>
+			<div id="7" class="square whiteBg" onclick="selected(this)"></div>
+			<div id="8" class="square blackBg" onclick="selected(this)"></div>
+		</div>
+		<button id="reset" onclick="location.reload();">Reset</button>
+		<script>
+			//add style to gameboard with javascript instead of using css.
+			let element = document.getElementById('gameboard');
+			element.style.width = '400px';
+			element.style.height = '400px';
+			element.style.backgroundColor = 'pink';
+
+			let currentPlayerSign = 'X';
+			let placedGameSigns = new Array(9); //an array that represent the marks made in this game since start
+
+			//define a list with all ways to get three in a row
+			const winLines = [
+				[0, 1, 2],
+				[3, 4, 5],
+				[6, 7, 8],
+				[0, 3, 6],
+				[1, 4, 7],
+				[2, 5, 8],
+				[0, 4, 8],
+				[2, 4, 6],
+			];
+
+			function selected(field) {
+				if (placedGameSigns[field.id] == undefined) {
+					//continue if selected field is empty
+					field.innerHTML = currentPlayerSign; //mark the field with the players sign (X or O)
+					placedGameSigns[field.id] = currentPlayerSign; //update the copy of the gameboard with the players sign (X or O)
+
+					if (!isWinner() && !gameboardFull()) {
+						// if the player dont have a winning row or there are moves left to do...
+						// switch user continue playing
+						currentPlayerSign = currentPlayerSign === 'X' ? 'O' : 'X';
+						document.getElementById('player').innerHTML = 'Player: ' + currentPlayerSign;
+					}
+				}
+			}
+
+			function isWinner() {
+				for (let index = 0; index < winLines.length; index++) {
+					// take row[index] from the array with winning lines
+					let winRow = winLines[index]; /// for ex for index= 2 , winRow will be [3, 4, 5]
+
+					//get the marks made by players from the gameboard (saved in placedGameSigns) on the places defined by winRow,
+					//for example if winRow = [3, 4, 5] playerRow is placedGameSigns[3], placedGameSigns[4], placedGameSigns[5],
+					let playerRow = [placedGameSigns[winRow[0]], placedGameSigns[winRow[1]], placedGameSigns[winRow[2]]];
+
+					if (!playerRow.includes(undefined)) {
+						//if playerRow has an undefined (unused) field, it cannot be a winning row.
+						if (allEqual(playerRow)) {
+							//if all the signs in playerRow are the same, then it is 3 in a row.
+							document.getElementById('player').innerHTML = 'Player ' + playerRow[0] + ' won the game!';
+							//show resetbutton
+							document.getElementById('reset').style.display = 'inline';
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+
+			function gameboardFull() {
+				//if there is an undefined spot in the array the gameboard is NOT full
+				return !placedGameSigns.includes(undefined);
+			}
+
+			function allEqual(arr) {
+				//ta ett item i taget och jämför med första tecknet i arrayen.
+				return arr.every((item) => item === arr[0]);
+			}
+		</script>
+	</body>
+</html>

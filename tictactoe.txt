@@ -1,0 +1,25 @@
+tic tac toe
+
+Describe the game:
+
+a gameboard with 3x3 fields
+2 players that take turn writing their mark in the fields, X or O
+the game end when one player has 3 marks in a row (or diagonal) or when all fields are taken.
+
+write the game in pseudo code
+
+paint the game board with div
+
+show current player
+
+add onclick event on field
+when click 
+  -mark the field with the players mark
+  -check if the player as won
+   ---if yes show winner and show reset button
+  -check if there is any available field
+    --if no show "its  a draw" and show reset button
+  - switch player
+
+
+
